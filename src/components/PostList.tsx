@@ -3,14 +3,20 @@ import React, { useEffect } from "react";
 import { Post } from "@/types";
 import { useUserStore } from "@/store/userStore";
 
-const PostList = ({ initialPosts }: { initialPosts: Post[] }) => {
+const PostList = ({ initialPosts, userId }: { initialPosts: Post[], userId: number }) => {
     const { posts, setPosts } = useUserStore();
 
     useEffect(() => {
         if (initialPosts) {
-            setPosts(initialPosts);
+            // Retrieve previously added posts from local storage
+            const localPosts: Post[] = JSON.parse(localStorage.getItem("localPosts") || "[]");
+            // Filter to only include posts added by THIS user
+            const thisUserAddedPosts = localPosts.filter(post => post.userId === userId);
+            
+            // Set store to both local posts + API posts
+            setPosts([...thisUserAddedPosts, ...initialPosts]);
         }
-    }, [initialPosts, setPosts]);
+    }, [initialPosts, setPosts, userId]);
 
     return (
         <div className="space-y-6">
@@ -25,3 +31,4 @@ const PostList = ({ initialPosts }: { initialPosts: Post[] }) => {
 };
 
 export default PostList;
+

@@ -1,6 +1,9 @@
 import { getPostsByUserId } from "@/services/postServices";
 import PostList from "@/components/PostList";
 import Link from "next/link";
+import AddPostForm from "@/components/AddPostForm";
+
+
 
 export default async function UserPostsPage({
     params,
@@ -13,8 +16,8 @@ export default async function UserPostsPage({
     return (
         <main className="container mx-auto p-6 max-w-4xl">
             <header className="mb-8">
-                <Link 
-                    href="/users" 
+                <Link
+                    href="/users"
                     className="text-blue-600 hover:text-blue-800 flex items-center gap-2 mb-4 transition-colors font-medium"
                 >
                     ← Back to User List
@@ -27,7 +30,9 @@ export default async function UserPostsPage({
                 </p>
             </header>
 
-            <PostList initialPosts={initialPosts} />
+            <AddPostForm userId={Number(id)} />
+
+            <PostList initialPosts={initialPosts} userId={Number(id)} />
         </main>
     );
 }
